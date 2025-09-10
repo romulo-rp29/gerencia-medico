@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Activity, FileText, Calendar } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import TopBar from '@/components/layout/topbar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,7 @@ export default function Procedures() {
   const [editingProcedure, setEditingProcedure] = useState<ProcedureWithDetails | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [dateFilter, setDateFilter] = useState<string>(new Date().toISOString().slice(0, 10));
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -96,6 +98,8 @@ export default function Procedures() {
   const filteredProcedures = procedures.filter(procedure => {
     if (statusFilter !== 'all' && procedure.status !== statusFilter) return false;
     if (typeFilter !== 'all' && procedure.procedureType !== typeFilter) return false;
+    const procedureDate = new Date(procedure.scheduledDate).toISOString().slice(0, 10);
+    if (dateFilter && procedureDate !== dateFilter) return false;
     return true;
   });
 
@@ -196,6 +200,16 @@ export default function Procedures() {
             </Select>
           </div>
           
+          <div className="flex items-center space-x-2">
+            <label className="text-sm font-medium text-slate-700">Data:</label>
+            <Input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="w-40"
+            />
+          </div>
+
           <div className="flex items-center space-x-2">
             <label className="text-sm font-medium text-slate-700">Tipo:</label>
             <Select value={typeFilter} onValueChange={setTypeFilter}>

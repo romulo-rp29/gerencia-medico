@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Calendar as CalendarIcon, Clock, User } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import TopBar from '@/components/layout/topbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,7 @@ export default function Appointments() {
   const [editingAppointment, setEditingAppointment] = useState<AppointmentWithDetails | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [dateFilter, setDateFilter] = useState<string>(new Date().toISOString().slice(0, 10));
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -119,6 +121,8 @@ export default function Appointments() {
   const filteredAppointments = appointments.filter(appointment => {
     if (statusFilter !== 'all' && appointment.status !== statusFilter) return false;
     if (typeFilter !== 'all' && appointment.type !== typeFilter) return false;
+    const appointmentDate = new Date(appointment.appointmentDate).toISOString().slice(0, 10);
+    if (dateFilter && appointmentDate !== dateFilter) return false;
     return true;
   });
 
@@ -232,6 +236,16 @@ export default function Appointments() {
             </Select>
           </div>
           
+          <div className="flex items-center space-x-2">
+            <label className="text-sm font-medium text-slate-700">Data:</label>
+            <Input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="w-40"
+            />
+          </div>
+
           <div className="flex items-center space-x-2">
             <label className="text-sm font-medium text-slate-700">Tipo:</label>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
