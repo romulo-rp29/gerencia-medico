@@ -60,15 +60,15 @@ export default function Appointments() {
       queryClient.invalidateQueries({ queryKey: ['/api/appointments/today'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
       toast({
-        title: "Success",
-        description: "Appointment created successfully",
+        title: "Sucesso",
+        description: "Agendamento criado com sucesso",
       });
       setShowAppointmentForm(false);
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to create appointment",
+        title: "Erro",
+        description: "Falha ao criar agendamento",
         variant: "destructive",
       });
     },
@@ -84,16 +84,16 @@ export default function Appointments() {
       queryClient.invalidateQueries({ queryKey: ['/api/appointments/today'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
       toast({
-        title: "Success",
-        description: "Appointment updated successfully",
+        title: "Sucesso",
+        description: "Agendamento atualizado com sucesso",
       });
       setShowAppointmentForm(false);
       setEditingAppointment(null);
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to update appointment",
+        title: "Erro",
+        description: "Falha ao atualizar agendamento",
         variant: "destructive",
       });
     },
@@ -110,8 +110,8 @@ export default function Appointments() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/appointments'] });
       toast({
-        title: "Success",
-        description: "Patient checked in successfully",
+        title: "Sucesso",
+        description: "Check-in do paciente realizado com sucesso",
       });
     },
   });
@@ -139,13 +139,13 @@ export default function Appointments() {
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      scheduled: { variant: 'secondary', label: 'Scheduled' },
-      confirmed: { variant: 'default', label: 'Confirmed' },
-      checked_in: { variant: 'outline', label: 'Checked In' },
-      in_progress: { variant: 'destructive', label: 'In Progress' },
-      completed: { variant: 'default', label: 'Completed' },
-      cancelled: { variant: 'secondary', label: 'Cancelled' },
-      no_show: { variant: 'destructive', label: 'No Show' },
+      scheduled: { variant: 'secondary', label: 'Agendado' },
+      confirmed: { variant: 'default', label: 'Confirmado' },
+      checked_in: { variant: 'outline', label: 'Check-in' },
+      in_progress: { variant: 'destructive', label: 'Em Andamento' },
+      completed: { variant: 'default', label: 'Concluído' },
+      cancelled: { variant: 'secondary', label: 'Cancelado' },
+      no_show: { variant: 'destructive', label: 'Não Compareceu' },
     } as const;
 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.scheduled;
@@ -158,17 +158,16 @@ export default function Appointments() {
 
   const getTypeBadge = (type: string) => {
     return type === 'endoscopy' ? (
-      <Badge className="bg-purple-100 text-purple-800 text-xs">Endoscopy</Badge>
+      <Badge className="bg-purple-100 text-purple-800 text-xs">Endoscopia</Badge>
     ) : (
-      <Badge className="bg-blue-100 text-blue-800 text-xs">Consultation</Badge>
+      <Badge className="bg-blue-100 text-blue-800 text-xs">Consulta</Badge>
     );
   };
 
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDateTime = (date: Date) => {
     return {
-      date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString('en-US', {
+      date: date.toLocaleDateString('pt-BR'),
+      time: date.toLocaleTimeString('pt-BR', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true,
@@ -179,7 +178,7 @@ export default function Appointments() {
   if (isLoading) {
     return (
       <div className="flex-1 flex flex-col">
-        <TopBar title="Appointments" />
+        <TopBar title="Agendamentos" />
         <main className="flex-1 p-6">
           <div className="animate-pulse space-y-4">
             {[...Array(5)].map((_, i) => (
@@ -193,14 +192,14 @@ export default function Appointments() {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <TopBar title="Appointments" />
+      <TopBar title="Agendamentos" />
       
       <main className="flex-1 overflow-y-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">Appointments</h1>
+            <h1 className="text-2xl font-semibold text-slate-900">Agendamentos</h1>
             <p className="text-slate-600 mt-1">
-              {filteredAppointments.length} {filteredAppointments.length === 1 ? 'appointment' : 'appointments'}
+              {filteredAppointments.length} {filteredAppointments.length === 1 ? 'agendamento' : 'agendamentos'}
             </p>
           </div>
           <Button 
@@ -208,7 +207,7 @@ export default function Appointments() {
             className="bg-medical-blue hover:bg-medical-blue/90"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Schedule Appointment
+            Agendar Consulta
           </Button>
         </div>
 
@@ -221,28 +220,28 @@ export default function Appointments() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="confirmed">Confirmed</SelectItem>
-                <SelectItem value="checked_in">Checked In</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
-                <SelectItem value="no_show">No Show</SelectItem>
+                <SelectItem value="all">Todos os Status</SelectItem>
+                <SelectItem value="scheduled">Agendado</SelectItem>
+                <SelectItem value="confirmed">Confirmado</SelectItem>
+                <SelectItem value="checked_in">Check-in</SelectItem>
+                <SelectItem value="in_progress">Em Andamento</SelectItem>
+                <SelectItem value="completed">Concluído</SelectItem>
+                <SelectItem value="cancelled">Cancelado</SelectItem>
+                <SelectItem value="no_show">Não Compareceu</SelectItem>
               </SelectContent>
             </Select>
           </div>
           
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-slate-700">Type:</label>
+            <label className="text-sm font-medium text-slate-700">Tipo:</label>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger className="w-40">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="consultation">Consultation</SelectItem>
-                <SelectItem value="endoscopy">Endoscopy</SelectItem>
+                <SelectItem value="all">Todos os Tipos</SelectItem>
+                <SelectItem value="consultation">Consulta</SelectItem>
+                <SelectItem value="endoscopy">Endoscopia</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -253,20 +252,20 @@ export default function Appointments() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Patient</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Duration</TableHead>
+                  <TableHead>Paciente</TableHead>
+                  <TableHead>Data</TableHead>
+                  <TableHead>Hora</TableHead>
+                  <TableHead>Tipo</TableHead>
+                  <TableHead>Duração</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Reason</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>Motivo</TableHead>
+                  <TableHead>Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredAppointments.length > 0 ? (
                   filteredAppointments.map((appointment) => {
-                    const { date, time } = formatDateTime(appointment.appointmentDate);
+                    const { date, time } = formatDateTime(new Date(appointment.appointmentDate));
                     return (
                       <TableRow key={appointment.id} className="hover:bg-slate-50">
                         <TableCell className="font-medium">
@@ -307,7 +306,7 @@ export default function Appointments() {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={8} className="text-center py-8 text-slate-500">
-                      No appointments found.
+                      Nenhum agendamento encontrado.
                     </TableCell>
                   </TableRow>
                 )}
@@ -322,7 +321,7 @@ export default function Appointments() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingAppointment ? 'Edit Appointment' : 'Schedule New Appointment'}
+              {editingAppointment ? 'Editar Agendamento' : 'Agendar Nova Consulta'}
             </DialogTitle>
           </DialogHeader>
           <AppointmentForm

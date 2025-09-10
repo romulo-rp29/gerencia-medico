@@ -24,15 +24,15 @@ export default function Login() {
       const success = await login(credentials.username, credentials.password);
       if (!success) {
         toast({
-          title: "Login Failed",
-          description: "Invalid username or password",
+          title: "Falha no Login",
+          description: "Usuário ou senha inválidos",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Login Error",
-        description: "An error occurred during login",
+        title: "Erro no Login",
+        description: "Ocorreu um erro durante o login",
         variant: "destructive",
       });
     } finally {
@@ -49,15 +49,15 @@ export default function Login() {
               <Stethoscope className="w-8 h-8 text-white" />
             </div>
           </div>
-          <CardTitle className="text-2xl">GastroMed Practice</CardTitle>
+          <CardTitle className="text-2xl">Consultório GastroMed</CardTitle>
           <CardDescription>
-            Sign in to access the practice management system
+            Faça login para acessar o sistema de gerenciamento do consultório
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">Usuário</Label>
               <Input
                 id="username"
                 type="text"
@@ -68,7 +68,7 @@ export default function Login() {
               />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Senha</Label>
               <Input
                 id="password"
                 type="password"
@@ -83,13 +83,13 @@ export default function Login() {
               className="w-full bg-medical-blue hover:bg-medical-blue/90"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
           <div className="mt-6 text-sm text-center text-slate-600">
-            <p>Demo credentials:</p>
-            <p><strong>Doctor:</strong> doctor / password</p>
-            <p><strong>Receptionist:</strong> receptionist / password</p>
+            <p>Credenciais de demonstração:</p>
+            <p><strong>Médico:</strong> doctor / password</p>
+            <p><strong>Recepcionista:</strong> receptionist / password</p>
           </div>
         </CardContent>
       </Card>

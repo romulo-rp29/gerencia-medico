@@ -44,7 +44,7 @@ export default function Dashboard() {
   });
 
   const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString('en-US', {
+    return new Date(dateString).toLocaleTimeString('pt-BR', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
@@ -53,11 +53,11 @@ export default function Dashboard() {
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      scheduled: { variant: 'secondary', label: 'Scheduled' },
-      confirmed: { variant: 'default', label: 'Confirmed' },
+      scheduled: { variant: 'secondary', label: 'Agendado' },
+      confirmed: { variant: 'default', label: 'Confirmado' },
       checked_in: { variant: 'outline', label: 'Check-in' },
-      in_progress: { variant: 'destructive', label: 'In Progress' },
-      completed: { variant: 'default', label: 'Completed' },
+      in_progress: { variant: 'destructive', label: 'Em Andamento' },
+      completed: { variant: 'default', label: 'Concluído' },
     } as const;
 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.scheduled;
@@ -70,9 +70,9 @@ export default function Dashboard() {
 
   const getTypeBadge = (type: string) => {
     return type === 'endoscopy' ? (
-      <Badge className="bg-purple-100 text-purple-800 text-xs">Endoscopy</Badge>
+      <Badge className="bg-purple-100 text-purple-800 text-xs">Endoscopia</Badge>
     ) : (
-      <Badge className="bg-blue-100 text-blue-800 text-xs">Consultation</Badge>
+      <Badge className="bg-blue-100 text-blue-800 text-xs">Consulta</Badge>
     );
   };
 
@@ -107,7 +107,7 @@ export default function Dashboard() {
   if (statsLoading || appointmentsLoading) {
     return (
       <div className="flex-1 flex flex-col">
-        <TopBar title="Dashboard" />
+        <TopBar title="Painel" />
         <main className="flex-1 p-6">
           <div className="animate-pulse space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -123,16 +123,16 @@ export default function Dashboard() {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <TopBar title="Dashboard" />
+      <TopBar title="Painel" />
       
       <main className="flex-1 overflow-y-auto p-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-6" hidden>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Today's Appointments</p>
+                  <p className="text-sm font-medium text-slate-600">Agendamentos de Hoje</p>
                   <p className="text-2xl font-bold text-slate-900">{stats?.todayAppointments || 0}</p>
                 </div>
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -141,16 +141,16 @@ export default function Dashboard() {
               </div>
               <div className="mt-4 flex items-center text-sm">
                 <span className="text-green-600 font-medium">+2</span>
-                <span className="text-slate-500 ml-1">from yesterday</span>
+                <span className="text-slate-500 ml-1">de ontem</span>
               </div>
             </CardContent>
           </Card>
           
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-6" hidden>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Pending Procedures</p>
+                  <p className="text-sm font-medium text-slate-600">Procedimentos Pendentes</p>
                   <p className="text-2xl font-bold text-slate-900">{stats?.pendingProcedures || 0}</p>
                 </div>
                 <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
@@ -158,16 +158,16 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-4 flex items-center text-sm">
-                <span className="text-amber-600 font-medium">3 urgent</span>
+                <span className="text-amber-600 font-medium"></span>
               </div>
             </CardContent>
           </Card>
           
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-6" hidden>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Active Patients</p>
+                  <p className="text-sm font-medium text-slate-600">Pacientes Ativos</p>
                   <p className="text-2xl font-bold text-slate-900">{stats?.activePatients || 0}</p>
                 </div>
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -175,17 +175,17 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="mt-4 flex items-center text-sm">
-                <span className="text-green-600 font-medium">+15</span>
-                <span className="text-slate-500 ml-1">this month</span>
+                <span className="text-green-600 font-medium"></span>
+                <span className="text-slate-500 ml-1"></span>
               </div>
             </CardContent>
           </Card>
           
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-6" hidden>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Revenue (MTD)</p>
+                  <p className="text-sm font-medium text-slate-600">Receita (Mês)</p>
                   <p className="text-2xl font-bold text-slate-900">
                     ${stats?.monthlyRevenue?.toLocaleString() || '0'}
                   </p>
@@ -196,7 +196,7 @@ export default function Dashboard() {
               </div>
               <div className="mt-4 flex items-center text-sm">
                 <span className="text-green-600 font-medium">+8.2%</span>
-                <span className="text-slate-500 ml-1">vs last month</span>
+                <span className="text-slate-500 ml-1">em relação ao mês anterior</span>
               </div>
             </CardContent>
           </Card>
@@ -207,10 +207,10 @@ export default function Dashboard() {
           <Card className="lg:col-span-2">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
-                <CardTitle>Today's Schedule</CardTitle>
-                <Button variant="ghost" size="sm">
-                  View Calendar
-                </Button>
+                <CardTitle>Agendamentos de Hoje</CardTitle>
+                {/* <Button variant="ghost" size="sm">
+                  Ver Calendário
+                </Button> */}
               </div>
             </CardHeader>
             <CardContent>
@@ -245,7 +245,7 @@ export default function Dashboard() {
                 ) : (
                   <div className="text-center py-8 text-slate-500">
                     <CalendarDays className="w-12 h-12 mx-auto mb-4 text-slate-300" />
-                    <p>No appointments scheduled for today</p>
+                    <p>Não há agendamentos para hoje</p>
                   </div>
                 )}
               </div>
@@ -254,7 +254,7 @@ export default function Dashboard() {
 
           {/* Quick Actions */}
           <div className="space-y-6">
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
               </CardHeader>
@@ -279,10 +279,10 @@ export default function Dashboard() {
                   Generate Report
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Recent Activity */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Recent Activity</CardTitle>
               </CardHeader>
@@ -313,7 +313,7 @@ export default function Dashboard() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </main>

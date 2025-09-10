@@ -93,11 +93,11 @@ export default function AppointmentForm({
             name="patientId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Patient *</FormLabel>
+                <FormLabel>Paciente *</FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a patient" />
+                      <SelectValue placeholder="Selecione um paciente" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -118,7 +118,7 @@ export default function AppointmentForm({
             name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Appointment Type *</FormLabel>
+                <FormLabel>Tipo de Agendamento *</FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger>
@@ -126,8 +126,8 @@ export default function AppointmentForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="consultation">Consultation</SelectItem>
-                    <SelectItem value="endoscopy">Endoscopy</SelectItem>
+                    <SelectItem value="consultation">Consulta</SelectItem>
+                    <SelectItem value="endoscopy">Endoscopia</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -140,7 +140,7 @@ export default function AppointmentForm({
             name="appointmentDate"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Date & Time *</FormLabel>
+                <FormLabel>Data e Hora *</FormLabel>
                 <FormControl>
                   <Input type="datetime-local" {...field} />
                 </FormControl>
@@ -154,7 +154,7 @@ export default function AppointmentForm({
             name="duration"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Duration (minutes)</FormLabel>
+                <FormLabel>Duração (minutos)</FormLabel>
                 <Select value={field.value?.toString()} onValueChange={(value) => field.onChange(parseInt(value))}>
                   <FormControl>
                     <SelectTrigger>
@@ -162,10 +162,10 @@ export default function AppointmentForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="30">30 minutes</SelectItem>
-                    <SelectItem value="60">60 minutes</SelectItem>
-                    <SelectItem value="90">90 minutes</SelectItem>
-                    <SelectItem value="120">120 minutes</SelectItem>
+                    <SelectItem value="30">30 minutos</SelectItem>
+                    <SelectItem value="60">60 minutos</SelectItem>
+                    <SelectItem value="90">90 minutos</SelectItem>
+                    <SelectItem value="120">120 minutos</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -179,9 +179,9 @@ export default function AppointmentForm({
           name="reason"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Reason for Visit *</FormLabel>
+              <FormLabel>Motivo da Visita *</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="e.g., Follow-up for GERD treatment" />
+                <Input {...field} placeholder="ex: Acompanhamento para tratamento de DRGE" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -201,13 +201,13 @@ export default function AppointmentForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="scheduled">Scheduled</SelectItem>
-                  <SelectItem value="confirmed">Confirmed</SelectItem>
-                  <SelectItem value="checked_in">Checked In</SelectItem>
-                  <SelectItem value="in_progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                  <SelectItem value="no_show">No Show</SelectItem>
+                  <SelectItem value="scheduled">Agendado</SelectItem>
+                  <SelectItem value="confirmed">Confirmado</SelectItem>
+                  <SelectItem value="checked_in">Check-in</SelectItem>
+                  <SelectItem value="in_progress">Em Andamento</SelectItem>
+                  <SelectItem value="completed">Concluído</SelectItem>
+                  <SelectItem value="cancelled">Cancelado</SelectItem>
+                  <SelectItem value="no_show">Não Compareceu</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -220,7 +220,7 @@ export default function AppointmentForm({
           name="notes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notes</FormLabel>
+              <FormLabel>Observações</FormLabel>
               <FormControl>
                 <Textarea 
                   value={field.value || ''}
@@ -238,10 +238,10 @@ export default function AppointmentForm({
 
         <div className="flex justify-end space-x-2">
           <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+            Cancelar
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : appointment ? 'Update Appointment' : 'Create Appointment'}
+            {isSubmitting ? 'Salvando...' : appointment ? 'Atualizar Agendamento' : 'Criar Agendamento'}
           </Button>
         </div>
       </form>

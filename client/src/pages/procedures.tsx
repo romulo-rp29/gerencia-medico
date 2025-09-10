@@ -55,15 +55,15 @@ export default function Procedures() {
       queryClient.invalidateQueries({ queryKey: ['/api/procedures'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
       toast({
-        title: "Success",
-        description: "Procedure created successfully",
+        title: "Sucesso",
+        description: "Procedimento criado com sucesso",
       });
       setShowProcedureForm(false);
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to create procedure",
+        title: "Erro",
+        description: "Falha ao criar procedimento",
         variant: "destructive",
       });
     },
@@ -78,16 +78,16 @@ export default function Procedures() {
       queryClient.invalidateQueries({ queryKey: ['/api/procedures'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
       toast({
-        title: "Success",
-        description: "Procedure updated successfully",
+        title: "Sucesso",
+        description: "Procedimento atualizado com sucesso",
       });
       setShowProcedureForm(false);
       setEditingProcedure(null);
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to update procedure",
+        title: "Erro",
+        description: "Falha ao atualizar procedimento",
         variant: "destructive",
       });
     },
@@ -116,10 +116,10 @@ export default function Procedures() {
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      scheduled: { variant: 'secondary', label: 'Scheduled' },
-      in_progress: { variant: 'destructive', label: 'In Progress' },
-      completed: { variant: 'default', label: 'Completed' },
-      cancelled: { variant: 'secondary', label: 'Cancelled' },
+      scheduled: { variant: 'secondary', label: 'Agendado' },
+      in_progress: { variant: 'destructive', label: 'Em Andamento' },
+      completed: { variant: 'default', label: 'Concluído' },
+      cancelled: { variant: 'secondary', label: 'Cancelado' },
     } as const;
 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.scheduled;
@@ -133,8 +133,8 @@ export default function Procedures() {
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return {
-      date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString('en-US', {
+      date: date.toLocaleDateString('pt-BR'),
+      time: date.toLocaleTimeString('pt-BR', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true,
@@ -145,7 +145,7 @@ export default function Procedures() {
   if (isLoading) {
     return (
       <div className="flex-1 flex flex-col">
-        <TopBar title="Procedures" />
+        <TopBar title="Procedimentos" />
         <main className="flex-1 p-6">
           <div className="animate-pulse space-y-4">
             {[...Array(5)].map((_, i) => (
@@ -159,14 +159,14 @@ export default function Procedures() {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <TopBar title="Procedures" />
+      <TopBar title="Procedimentos" />
       
       <main className="flex-1 overflow-y-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">Procedures</h1>
+            <h1 className="text-2xl font-semibold text-slate-900">Procedimentos</h1>
             <p className="text-slate-600 mt-1">
-              {filteredProcedures.length} {filteredProcedures.length === 1 ? 'procedure' : 'procedures'}
+              {filteredProcedures.length} {filteredProcedures.length === 1 ? 'procedimento' : 'procedimentos'}
             </p>
           </div>
           <Button 
@@ -174,7 +174,7 @@ export default function Procedures() {
             className="bg-medical-blue hover:bg-medical-blue/90"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Procedure
+            Adicionar Procedimento
           </Button>
         </div>
 
@@ -187,27 +187,27 @@ export default function Procedures() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="all">Todos os Status</SelectItem>
+                <SelectItem value="scheduled">Agendado</SelectItem>
+                <SelectItem value="in_progress">Em Andamento</SelectItem>
+                <SelectItem value="completed">Concluído</SelectItem>
+                <SelectItem value="cancelled">Cancelado</SelectItem>
               </SelectContent>
             </Select>
           </div>
           
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-slate-700">Type:</label>
+            <label className="text-sm font-medium text-slate-700">Tipo:</label>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger className="w-48">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="Upper Endoscopy">Upper Endoscopy (EGD)</SelectItem>
-                <SelectItem value="Colonoscopy">Colonoscopy</SelectItem>
-                <SelectItem value="Flexible Sigmoidoscopy">Flexible Sigmoidoscopy</SelectItem>
-                <SelectItem value="Capsule Endoscopy">Capsule Endoscopy</SelectItem>
+                <SelectItem value="all">Todos os Tipos</SelectItem>
+                <SelectItem value="Upper Endoscopy">Endoscopia Digestiva Alta (EDA)</SelectItem>
+                <SelectItem value="Colonoscopy">Colonoscopia</SelectItem>
+                <SelectItem value="Flexible Sigmoidoscopy">Retossigmoidoscopia Flexível</SelectItem>
+                <SelectItem value="Capsule Endoscopy">Cápsula Endoscópica</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -218,14 +218,14 @@ export default function Procedures() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Patient</TableHead>
-                  <TableHead>Procedure Type</TableHead>
-                  <TableHead>Scheduled Date</TableHead>
+                  <TableHead>Paciente</TableHead>
+                  <TableHead>Tipo de Procedimento</TableHead>
+                  <TableHead>Data Agendada</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Follow-up</TableHead>
-                  <TableHead>Pathology</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>Duração</TableHead>
+                  <TableHead>Acompanhamento</TableHead>
+                  <TableHead>Patologia</TableHead>
+                  <TableHead>Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -254,16 +254,16 @@ export default function Procedures() {
                         </TableCell>
                         <TableCell>
                           {procedure.followUpRequired ? (
-                            <Badge variant="outline" className="text-xs">Required</Badge>
+                            <Badge variant="outline" className="text-xs">Necessário</Badge>
                           ) : (
-                            <span className="text-slate-400">None</span>
+                            <span className="text-slate-400">Nenhum</span>
                           )}
                         </TableCell>
                         <TableCell>
                           {procedure.pathologyOrdered ? (
-                            <Badge variant="outline" className="text-xs">Ordered</Badge>
+                            <Badge variant="outline" className="text-xs">Solicitada</Badge>
                           ) : (
-                            <span className="text-slate-400">None</span>
+                            <span className="text-slate-400">Nenhum</span>
                           )}
                         </TableCell>
                         <TableCell>
@@ -283,7 +283,7 @@ export default function Procedures() {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={8} className="text-center py-8 text-slate-500">
-                      No procedures found.
+                      Nenhum procedimento encontrado.
                     </TableCell>
                   </TableRow>
                 )}
@@ -298,7 +298,7 @@ export default function Procedures() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingProcedure ? 'Edit Procedure' : 'Add New Procedure'}
+              {editingProcedure ? 'Editar Procedimento' : 'Adicionar Novo Procedimento'}
             </DialogTitle>
           </DialogHeader>
           <ProcedureForm

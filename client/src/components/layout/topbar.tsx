@@ -33,7 +33,7 @@ export default function TopBar({ title, onSearch }: TopBarProps) {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 type="text"
-                placeholder="Search patients..."
+                placeholder="Buscar pacientes..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-10 w-80"
@@ -48,7 +48,7 @@ export default function TopBar({ title, onSearch }: TopBarProps) {
             <Badge className="absolute -top-1 -right-1 w-2 h-2 p-0 bg-medical-red" />
           </Button>
           <div className="text-right">
-            <p className="text-sm text-slate-500">Today's Date</p>
+            <p className="text-sm text-slate-500">Data de Hoje</p>
             <p className="text-sm font-medium text-slate-900">{currentDate}</p>
           </div>
         </div>

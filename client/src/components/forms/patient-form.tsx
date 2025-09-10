@@ -68,7 +68,7 @@ export default function PatientForm({
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name *</FormLabel>
+                <FormLabel>Primeiro Nome *</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -82,7 +82,7 @@ export default function PatientForm({
             name="lastName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Last Name *</FormLabel>
+                <FormLabel>Sobrenome *</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -96,7 +96,7 @@ export default function PatientForm({
             name="dateOfBirth"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Date of Birth *</FormLabel>
+                <FormLabel>Data de Nascimento *</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -110,7 +110,7 @@ export default function PatientForm({
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number *</FormLabel>
+                <FormLabel>Telefone *</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="(555) 123-4567" />
                 </FormControl>
@@ -124,7 +124,7 @@ export default function PatientForm({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>E-mail</FormLabel>
                 <FormControl>
                   <Input 
                     type="email" 
@@ -145,7 +145,7 @@ export default function PatientForm({
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Address</FormLabel>
+                <FormLabel>Endereço</FormLabel>
                 <FormControl>
                   <Input 
                     value={field.value || ''}
@@ -165,7 +165,7 @@ export default function PatientForm({
             name="emergencyContact"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Emergency Contact</FormLabel>
+                <FormLabel>Contato de Emergência</FormLabel>
                 <FormControl>
                   <Input 
                     value={field.value || ''}
@@ -185,7 +185,7 @@ export default function PatientForm({
             name="emergencyPhone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Emergency Phone</FormLabel>
+                <FormLabel>Telefone de Emergência</FormLabel>
                 <FormControl>
                   <Input 
                     value={field.value || ''}
@@ -202,14 +202,14 @@ export default function PatientForm({
         </div>
 
         <div className="border-t pt-6">
-          <h3 className="text-lg font-semibold mb-4">Insurance Information</h3>
+          <h3 className="text-lg font-semibold mb-4">Informações do Convênio</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormField
               control={form.control}
               name="insurancePrimary"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Primary Insurance</FormLabel>
+                  <FormLabel>Convênio Principal</FormLabel>
                   <FormControl>
                     <Input 
                       value={field.value || ''}
@@ -229,7 +229,7 @@ export default function PatientForm({
               name="insurancePolicyNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Policy Number</FormLabel>
+                  <FormLabel>Número da Apólice</FormLabel>
                   <FormControl>
                     <Input 
                       value={field.value || ''}
@@ -249,7 +249,7 @@ export default function PatientForm({
               name="insuranceGroupNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Group Number</FormLabel>
+                  <FormLabel>Número do Grupo</FormLabel>
                   <FormControl>
                     <Input 
                       value={field.value || ''}
@@ -271,7 +271,7 @@ export default function PatientForm({
           name="notes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notes</FormLabel>
+              <FormLabel>Observações</FormLabel>
               <FormControl>
                 <Textarea 
                   value={field.value || ''}
@@ -289,10 +289,10 @@ export default function PatientForm({
 
         <div className="flex justify-end space-x-2">
           <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+            Cancelar
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : patient ? 'Update Patient' : 'Create Patient'}
+            {isSubmitting ? 'Salvando...' : patient ? 'Atualizar Paciente' : 'Criar Paciente'}
           </Button>
         </div>
       </form>

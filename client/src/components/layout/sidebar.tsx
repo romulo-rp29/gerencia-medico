@@ -5,13 +5,11 @@ import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: Home },
-  { name: 'Patients', href: '/patients', icon: UserX },
-  { name: 'Appointments', href: '/appointments', icon: Calendar },
-  { name: 'Procedures', href: '/procedures', icon: Activity },
-  { name: 'Patient Evolutions', href: '/patient-evolutions', icon: FileText },
-  { name: 'Billing', href: '/billing', icon: DollarSign },
-  { name: 'Reports', href: '/reports', icon: BarChart },
+  { name: 'Painel', href: '/', icon: Home },
+  { name: 'Pacientes', href: '/patients', icon: UserX },
+  { name: 'Agendamentos', href: '/appointments', icon: Calendar },
+  { name: 'Procedimentos', href: '/procedures', icon: Activity },
+  { name: 'Evoluções do Paciente', href: '/patient-evolutions', icon: FileText },
 ];
 
 export default function Sidebar() {
@@ -26,8 +24,8 @@ export default function Sidebar() {
             <Stethoscope className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-slate-900">GastroMed</h1>
-            <p className="text-sm text-slate-500">Dr. Smith's Practice</p>
+            <h1 className="text-lg font-semibold text-slate-900">Gastro</h1>
+            <p className="text-sm text-slate-500">Dr. Walber Lima</p>
           </div>
         </div>
       </div>
@@ -65,7 +63,7 @@ export default function Sidebar() {
           className="w-full justify-start text-slate-600 hover:text-slate-900"
         >
           <LogOut className="w-4 h-4 mr-2" />
-          Sign out
+          Sair
         </Button>
       </div>
     </div>

@@ -92,7 +92,7 @@ export default function ProcedureForm({
             name="procedureType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Procedure Type *</FormLabel>
+                <FormLabel>Tipo de Procedimento *</FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger>
@@ -100,10 +100,10 @@ export default function ProcedureForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Upper Endoscopy">Upper Endoscopy (EGD)</SelectItem>
-                    <SelectItem value="Colonoscopy">Colonoscopy</SelectItem>
-                    <SelectItem value="Flexible Sigmoidoscopy">Flexible Sigmoidoscopy</SelectItem>
-                    <SelectItem value="Capsule Endoscopy">Capsule Endoscopy</SelectItem>
+                    <SelectItem value="Upper Endoscopy">Endoscopia Digestiva Alta (EDA)</SelectItem>
+                    <SelectItem value="Colonoscopy">Colonoscopia</SelectItem>
+                    <SelectItem value="Flexible Sigmoidoscopy">Retossigmoidoscopia Flexível</SelectItem>
+                    <SelectItem value="Capsule Endoscopy">Cápsula Endoscópica</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -124,10 +124,10 @@ export default function ProcedureForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="scheduled">Scheduled</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                    <SelectItem value="cancelled">Cancelled</SelectItem>
+                    <SelectItem value="scheduled">Agendado</SelectItem>
+                    <SelectItem value="in_progress">Em Andamento</SelectItem>
+                    <SelectItem value="completed">Concluído</SelectItem>
+                    <SelectItem value="cancelled">Cancelado</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -140,7 +140,7 @@ export default function ProcedureForm({
             name="scheduledDate"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Scheduled Date & Time *</FormLabel>
+                <FormLabel>Data e Hora Agendada *</FormLabel>
                 <FormControl>
                   <Input type="datetime-local" {...field} />
                 </FormControl>
@@ -154,7 +154,7 @@ export default function ProcedureForm({
             name="startTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Actual Start Time</FormLabel>
+                <FormLabel>Hora de Início Real</FormLabel>
                 <FormControl>
                   <Input type="datetime-local" {...field} />
                 </FormControl>
@@ -168,7 +168,7 @@ export default function ProcedureForm({
             name="endTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Actual End Time</FormLabel>
+                <FormLabel>Hora de Fim Real</FormLabel>
                 <FormControl>
                   <Input type="datetime-local" {...field} />
                 </FormControl>
@@ -183,7 +183,7 @@ export default function ProcedureForm({
           name="findings"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Findings</FormLabel>
+              <FormLabel>Achados</FormLabel>
               <FormControl>
                 <Textarea 
                   value={field.value || ''}
@@ -192,7 +192,7 @@ export default function ProcedureForm({
                   name={field.name}
                   ref={field.ref}
                   rows={4} 
-                  placeholder="Describe procedure findings..."
+                  placeholder="Descreva os achados do procedimento..."
                 />
               </FormControl>
               <FormMessage />
@@ -205,7 +205,7 @@ export default function ProcedureForm({
           name="recommendations"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Recommendations</FormLabel>
+              <FormLabel>Recomendações</FormLabel>
               <FormControl>
                 <Textarea 
                   value={field.value || ''}
@@ -214,7 +214,7 @@ export default function ProcedureForm({
                   name={field.name}
                   ref={field.ref}
                   rows={3} 
-                  placeholder="Treatment recommendations..."
+                  placeholder="Recomendações de tratamento..."
                 />
               </FormControl>
               <FormMessage />
@@ -227,7 +227,7 @@ export default function ProcedureForm({
           name="complications"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Complications</FormLabel>
+              <FormLabel>Complicações</FormLabel>
               <FormControl>
                 <Textarea 
                   value={field.value || ''}
@@ -236,7 +236,7 @@ export default function ProcedureForm({
                   name={field.name}
                   ref={field.ref}
                   rows={3} 
-                  placeholder="Any complications during procedure..."
+                  placeholder="Quaisquer complicações durante o procedimento..."
                 />
               </FormControl>
               <FormMessage />
@@ -257,7 +257,7 @@ export default function ProcedureForm({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Follow-up Required</FormLabel>
+                  <FormLabel>Acompanhamento Necessário</FormLabel>
                 </div>
               </FormItem>
             )}
@@ -275,7 +275,7 @@ export default function ProcedureForm({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Pathology Ordered</FormLabel>
+                  <FormLabel>Patologia Solicitada</FormLabel>
                 </div>
               </FormItem>
             )}
@@ -287,7 +287,7 @@ export default function ProcedureForm({
           name="followUpInstructions"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Follow-up Instructions</FormLabel>
+              <FormLabel>Instruções de Acompanhamento</FormLabel>
               <FormControl>
                 <Textarea 
                   value={field.value || ''}
@@ -296,7 +296,7 @@ export default function ProcedureForm({
                   name={field.name}
                   ref={field.ref}
                   rows={3} 
-                  placeholder="Instructions for follow-up care..."
+                  placeholder="Instruções para cuidados de acompanhamento..."
                 />
               </FormControl>
               <FormMessage />
@@ -309,7 +309,7 @@ export default function ProcedureForm({
           name="pathologyResults"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Pathology Results</FormLabel>
+              <FormLabel>Resultados da Patologia</FormLabel>
               <FormControl>
                 <Textarea 
                   value={field.value || ''}
@@ -318,7 +318,7 @@ export default function ProcedureForm({
                   name={field.name}
                   ref={field.ref}
                   rows={3} 
-                  placeholder="Pathology results (when available)..."
+                  placeholder="Resultados da patologia (quando disponíveis)..."
                 />
               </FormControl>
               <FormMessage />
@@ -328,10 +328,10 @@ export default function ProcedureForm({
 
         <div className="flex justify-end space-x-2">
           <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+            Cancelar
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : procedure ? 'Update Procedure' : 'Create Procedure'}
+            {isSubmitting ? 'Salvando...' : procedure ? 'Atualizar Procedimento' : 'Criar Procedimento'}
           </Button>
         </div>
       </form>

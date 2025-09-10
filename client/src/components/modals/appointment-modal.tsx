@@ -24,7 +24,7 @@ import type { Patient, InsertAppointment } from '@shared/schema';
 interface AppointmentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  patient?: Patient;
+  patient?: Patient | null;
   initialDate?: Date;
 }
 
@@ -56,15 +56,15 @@ export default function AppointmentModal({
       queryClient.invalidateQueries({ queryKey: ['/api/appointments/today'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
       toast({
-        title: "Success",
-        description: "Appointment scheduled successfully",
+        title: "Sucesso",
+        description: "Agendamento realizado com sucesso",
       });
       onClose();
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to schedule appointment",
+        title: "Erro",
+        description: "Falha ao agendar consulta",
         variant: "destructive",
       });
     },
@@ -75,8 +75,8 @@ export default function AppointmentModal({
     
     if (!formData.patientId || !formData.type || !formData.appointmentDate || !formData.reason) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields",
+        title: "Erro",
+        description: "Por favor, preencha todos os campos obrigatórios",
         variant: "destructive",
       });
       return;
@@ -111,13 +111,13 @@ export default function AppointmentModal({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Schedule Appointment</DialogTitle>
+          <DialogTitle>Agendar Consulta</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {patient && (
             <div>
-              <Label>Patient</Label>
+              <Label>Paciente</Label>
               <p className="text-sm font-medium text-slate-900 mt-1">
                 {patient.firstName} {patient.lastName}
               </p>
@@ -125,7 +125,7 @@ export default function AppointmentModal({
           )}
 
           <div>
-            <Label htmlFor="appointmentDate">Date & Time *</Label>
+            <Label htmlFor="appointmentDate">Data e Hora *</Label>
             <Input
               id="appointmentDate"
               type="datetime-local"
@@ -136,61 +136,61 @@ export default function AppointmentModal({
           </div>
 
           <div>
-            <Label htmlFor="type">Appointment Type *</Label>
+            <Label htmlFor="type">Tipo de Agendamento *</Label>
             <Select value={formData.type} onValueChange={(value) => setFormData(prev => ({ ...prev, type: value as 'consultation' | 'endoscopy' }))}>
               <SelectTrigger>
-                <SelectValue placeholder="Select appointment type" />
+                <SelectValue placeholder="Selecione o tipo de agendamento" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="consultation">Consultation</SelectItem>
-                <SelectItem value="endoscopy">Endoscopy</SelectItem>
+                <SelectItem value="consultation">Consulta</SelectItem>
+                <SelectItem value="endoscopy">Endoscopia</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="duration">Duration (minutes)</Label>
+            <Label htmlFor="duration">Duração (minutos)</Label>
             <Select value={formData.duration.toString()} onValueChange={(value) => setFormData(prev => ({ ...prev, duration: parseInt(value) }))}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="30">30 minutes</SelectItem>
-                <SelectItem value="60">60 minutes</SelectItem>
-                <SelectItem value="90">90 minutes</SelectItem>
-                <SelectItem value="120">120 minutes</SelectItem>
+                <SelectItem value="30">30 minutos</SelectItem>
+                <SelectItem value="60">60 minutos</SelectItem>
+                <SelectItem value="90">90 minutos</SelectItem>
+                <SelectItem value="120">120 minutos</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="reason">Reason for Visit *</Label>
+            <Label htmlFor="reason">Motivo da Visita *</Label>
             <Input
               id="reason"
               value={formData.reason}
               onChange={(e) => setFormData(prev => ({ ...prev, reason: e.target.value }))}
-              placeholder="e.g., Follow-up for GERD treatment"
+              placeholder="ex: Acompanhamento para tratamento de DRGE"
               required
             />
           </div>
 
           <div>
-            <Label htmlFor="notes">Notes</Label>
+            <Label htmlFor="notes">Observações</Label>
             <Textarea
               id="notes"
               value={formData.notes}
               onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-              placeholder="Additional notes..."
+              placeholder="Observações adicionais..."
               rows={3}
             />
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
             <Button type="button" variant="outline" onClick={handleClose}>
-              Cancel
+              Cancelar
             </Button>
             <Button type="submit" disabled={createAppointmentMutation.isPending}>
-              {createAppointmentMutation.isPending ? 'Scheduling...' : 'Schedule Appointment'}
+              {createAppointmentMutation.isPending ? 'Agendando...' : 'Agendar Consulta'}
             </Button>
           </div>
         </form>

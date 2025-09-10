@@ -58,16 +58,16 @@ export default function Patients() {
       queryClient.invalidateQueries({ queryKey: ['/api/patients'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
       toast({
-        title: "Success",
-        description: "Patient created successfully",
+        title: "Sucesso",
+        description: "Paciente criado com sucesso",
       });
       setShowPatientForm(false);
       setEditingPatient(null);
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to create patient",
+        title: "Erro",
+        description: "Falha ao criar paciente",
         variant: "destructive",
       });
     },
@@ -81,16 +81,16 @@ export default function Patients() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/patients'] });
       toast({
-        title: "Success",
-        description: "Patient updated successfully",
+        title: "Sucesso",
+        description: "Paciente atualizado com sucesso",
       });
       setShowPatientForm(false);
       setEditingPatient(null);
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to update patient",
+        title: "Erro",
+        description: "Falha ao atualizar paciente",
         variant: "destructive",
       });
     },
@@ -127,7 +127,7 @@ export default function Patients() {
   if (isLoading) {
     return (
       <div className="flex-1 flex flex-col">
-        <TopBar title="Patients" />
+        <TopBar title="Pacientes" />
         <main className="flex-1 p-6">
           <div className="animate-pulse space-y-4">
             {[...Array(5)].map((_, i) => (
@@ -141,14 +141,14 @@ export default function Patients() {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <TopBar title="Patients" onSearch={setSearchQuery} />
+      <TopBar title="Pacientes" onSearch={setSearchQuery} />
       
       <main className="flex-1 overflow-y-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">Patients</h1>
+            <h1 className="text-2xl font-semibold text-slate-900">Pacientes</h1>
             <p className="text-slate-600 mt-1">
-              {displayedPatients.length} {displayedPatients.length === 1 ? 'patient' : 'patients'}
+              {displayedPatients.length} {displayedPatients.length === 1 ? 'paciente' : 'pacientes'}
             </p>
           </div>
           <Button 
@@ -156,7 +156,7 @@ export default function Patients() {
             className="bg-medical-blue hover:bg-medical-blue/90"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Patient
+            Adicionar Paciente
           </Button>
         </div>
 
@@ -165,13 +165,13 @@ export default function Patients() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Date of Birth</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Insurance</TableHead>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>Data de Nascimento</TableHead>
+                  <TableHead>Telefone</TableHead>
+                  <TableHead>E-mail</TableHead>
+                  <TableHead>Convênio</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -192,7 +192,7 @@ export default function Patients() {
                       <TableCell>{patient.insurancePrimary || 'N/A'}</TableCell>
                       <TableCell>
                         <Badge variant={patient.isActive ? "default" : "secondary"}>
-                          {patient.isActive ? 'Active' : 'Inactive'}
+                          {patient.isActive ? 'Ativo' : 'Inativo'}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -218,7 +218,7 @@ export default function Patients() {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center py-8 text-slate-500">
-                      {searchQuery ? 'No patients found matching your search.' : 'No patients registered yet.'}
+                      {searchQuery ? 'Nenhum paciente encontrado para sua busca.' : 'Nenhum paciente cadastrado ainda.'}
                     </TableCell>
                   </TableRow>
                 )}
@@ -233,7 +233,7 @@ export default function Patients() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingPatient ? 'Edit Patient' : 'Add New Patient'}
+              {editingPatient ? 'Editar Paciente' : 'Adicionar Novo Paciente'}
             </DialogTitle>
           </DialogHeader>
           <PatientForm
@@ -259,14 +259,14 @@ export default function Patients() {
         onScheduleAppointment={handleScheduleAppointment}
         onAddNote={(patient) => {
           toast({
-            title: "Feature Coming Soon",
-            description: "Note-taking functionality will be available soon.",
+            title: "Funcionalidade em Breve",
+            description: "A funcionalidade de anotações estará disponível em breve.",
           });
         }}
         onViewBilling={(patient) => {
           toast({
-            title: "Feature Coming Soon",
-            description: "Patient billing details will be available soon.",
+            title: "Funcionalidade em Breve",
+            description: "Os detalhes de faturamento do paciente estarão disponíveis em breve.",
           });
         }}
       />
