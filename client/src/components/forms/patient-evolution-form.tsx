@@ -114,6 +114,8 @@ export function PatientEvolutionForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+
+            {/* Linha de selects e data */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -206,9 +208,145 @@ export function PatientEvolutionForm({
               />
             </div>
 
-            {/* Restante do formulário (Queixa, Histórico, Exame, Avaliação, Plano, Prescrições, Próxima Consulta, Observações) */}
-            {/* ...copie exatamente como você tinha antes... */}
-            
+            {/* Seções de texto */}
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="chiefComplaint"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Queixa Principal</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Descreva a queixa principal do paciente" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="historyOfPresentIllness"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>História da Doença Atual</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Descreva a história da doença atual" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="physicalExamination"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Exame Físico</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Detalhes do exame físico" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="assessment"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Avaliação / Diagnóstico</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Avaliação do caso" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="plan"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Plano Terapêutico</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Plano de tratamento e condutas" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Seção de Prescrições */}
+              <div className="space-y-2">
+                <Label className="text-base font-medium">Prescrições</Label>
+                {prescriptions.map((prescription, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
+                    <Input
+                      placeholder="Medicamento"
+                      value={prescription.medication}
+                      onChange={(e) => updatePrescription(index, "medication", e.target.value)}
+                    />
+                    <Input
+                      placeholder="Dosagem"
+                      value={prescription.dosage}
+                      onChange={(e) => updatePrescription(index, "dosage", e.target.value)}
+                    />
+                    <Input
+                      placeholder="Frequência"
+                      value={prescription.frequency}
+                      onChange={(e) => updatePrescription(index, "frequency", e.target.value)}
+                    />
+                    <div className="flex items-center gap-2">
+                      <Input
+                        placeholder="Duração"
+                        value={prescription.duration}
+                        onChange={(e) => updatePrescription(index, "duration", e.target.value)}
+                      />
+                      <Button type="button" variant="destructive" onClick={() => removePrescription(index)}>
+                        <X size={16} />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={addPrescription} className="mt-2">
+                  <Plus size={16} /> Adicionar Prescrição
+                </Button>
+              </div>
+
+              <FormField
+                control={form.control}
+                name="nextAppointment"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Próxima Consulta</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="observations"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Observações</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Observações adicionais" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Botões de ação */}
             <div className="flex justify-end space-x-4 mt-6">
               <Button type="button" variant="outline" onClick={onCancel}>
                 Cancelar
@@ -217,6 +355,7 @@ export function PatientEvolutionForm({
                 {isSubmitting ? "Salvando..." : "Salvar"}
               </Button>
             </div>
+
           </form>
         </Form>
       </CardContent>
