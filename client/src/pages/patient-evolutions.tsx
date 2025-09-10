@@ -52,9 +52,8 @@ export default function PatientEvolutions() {
   });
 
   // Fetch doctors
-  const { data: doctors = [] } = useQuery({
-    queryKey: ["/api/users", "doctor"],
-    queryFn: () => apiRequest("/api/users?role=doctor"),
+  const { data: doctors = [] } = useQuery<UserType[]>({
+    queryKey: ["/api/users?role=doctor"],
   });
 
   // Fetch appointments
@@ -63,17 +62,16 @@ export default function PatientEvolutions() {
   });
 
   // Fetch evolutions for selected patient
-  const { data: evolutions = [], isLoading } = useQuery({
-    queryKey: ["/api/patient-evolutions", selectedPatientId],
-    queryFn: () => apiRequest(`/api/patient-evolutions/${selectedPatientId}`),
+  const { data: evolutions = [], isLoading } = useQuery<PatientEvolutionWithRelations[]>({
+    queryKey: [`/api/patient-evolutions/${selectedPatientId}`],
     enabled: !!selectedPatientId,
   });
 
   const createEvolutionMutation = useMutation({
     mutationFn: (data: InsertPatientEvolution) => 
-      apiRequest("/api/patient-evolutions", "POST", data),
+      apiRequest("POST", "/api/patient-evolutions", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/patient-evolutions"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/patient-evolutions/${selectedPatientId}`] });
       setShowForm(false);
       toast({
         title: "Sucesso",
@@ -91,9 +89,9 @@ export default function PatientEvolutions() {
 
   const updateEvolutionMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<InsertPatientEvolution> }) =>
-      apiRequest(`/api/patient-evolutions/${id}`, "PATCH", data),
+      apiRequest("PATCH", `/api/patient-evolutions/${id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/patient-evolutions"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/patient-evolutions/${selectedPatientId}`] });
       setEditingEvolution(null);
       setShowForm(false);
       toast({
@@ -112,9 +110,9 @@ export default function PatientEvolutions() {
 
   const deleteEvolutionMutation = useMutation({
     mutationFn: (id: string) =>
-      apiRequest(`/api/patient-evolutions/${id}`, "DELETE"),
+      apiRequest("DELETE", `/api/patient-evolutions/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/patient-evolutions"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/patient-evolutions/${selectedPatientId}`] });
       toast({
         title: "Sucesso",
         description: "Evolução excluída com sucesso.",

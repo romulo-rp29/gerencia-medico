@@ -66,8 +66,14 @@ export function PatientEvolutionForm({
     defaultValues: {
       patientId: "",
       doctorId: "",
-      appointmentId: "",
-      evolutionDate: new Date().toISOString().split('T')[0],
+      appointmentId: "none",
+      evolutionDate: (() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      })(),
       chiefComplaint: "",
       historyOfPresentIllness: "",
       physicalExamination: "",
@@ -82,6 +88,7 @@ export function PatientEvolutionForm({
   const handleSubmit = (data: FormData) => {
     onSubmit({
       ...data,
+      appointmentId: data.appointmentId === "none" ? undefined : data.appointmentId,
       prescriptions: prescriptions as any,
     });
   };
@@ -113,6 +120,8 @@ export function PatientEvolutionForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+
+            {/* Linha de selects e data */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -120,7 +129,7 @@ export function PatientEvolutionForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Paciente</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o paciente" />
@@ -145,7 +154,7 @@ export function PatientEvolutionForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Médico</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o médico" />
@@ -170,14 +179,14 @@ export function PatientEvolutionForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Consulta (Opcional)</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione a consulta" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">Nenhuma consulta</SelectItem>
+                        <SelectItem value="none">Nenhuma consulta</SelectItem>
                         {patientAppointments.map((appointment) => (
                           <SelectItem key={appointment.id} value={appointment.id}>
                             {new Date(appointment.appointmentDate).toLocaleDateString('pt-BR')} - {appointment.reason}
@@ -205,6 +214,7 @@ export function PatientEvolutionForm({
               />
             </div>
 
+            {/* Seções de texto */}
             <div className="space-y-4">
               <FormField
                 control={form.control}
@@ -213,11 +223,7 @@ export function PatientEvolutionForm({
                   <FormItem>
                     <FormLabel>Queixa Principal</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Descreva a queixa principal do paciente..."
-                        className="min-h-[80px]"
-                        {...field} 
-                      />
+                      <Textarea {...field} placeholder="Descreva a queixa principal do paciente" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -231,11 +237,7 @@ export function PatientEvolutionForm({
                   <FormItem>
                     <FormLabel>História da Doença Atual</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Descreva a história da doença atual..."
-                        className="min-h-[100px]"
-                        {...field} 
-                      />
+                      <Textarea {...field} placeholder="Descreva a história da doença atual" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -249,11 +251,7 @@ export function PatientEvolutionForm({
                   <FormItem>
                     <FormLabel>Exame Físico</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Descreva os achados do exame físico..."
-                        className="min-h-[100px]"
-                        {...field} 
-                      />
+                      <Textarea {...field} placeholder="Detalhes do exame físico" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -265,13 +263,9 @@ export function PatientEvolutionForm({
                 name="assessment"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Avaliação/Diagnóstico</FormLabel>
+                    <FormLabel>Avaliação / Diagnóstico</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Descreva a avaliação e diagnóstico..."
-                        className="min-h-[100px]"
-                        {...field} 
-                      />
+                      <Textarea {...field} placeholder="Avaliação do caso" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -285,91 +279,50 @@ export function PatientEvolutionForm({
                   <FormItem>
                     <FormLabel>Plano Terapêutico</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Descreva o plano de tratamento..."
-                        className="min-h-[100px]"
-                        {...field} 
-                      />
+                      <Textarea {...field} placeholder="Plano de tratamento e condutas" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
 
-            {/* Prescriptions Section */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label className="text-base font-semibold">Prescrições</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={addPrescription}
-                  className="flex items-center gap-2"
-                >
-                  <Plus size={16} />
-                  Adicionar Prescrição
+              {/* Seção de Prescrições */}
+              <div className="space-y-2">
+                <Label className="text-base font-medium">Prescrições</Label>
+                {prescriptions.map((prescription, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
+                    <Input
+                      placeholder="Medicamento"
+                      value={prescription.medication}
+                      onChange={(e) => updatePrescription(index, "medication", e.target.value)}
+                    />
+                    <Input
+                      placeholder="Dosagem"
+                      value={prescription.dosage}
+                      onChange={(e) => updatePrescription(index, "dosage", e.target.value)}
+                    />
+                    <Input
+                      placeholder="Frequência"
+                      value={prescription.frequency}
+                      onChange={(e) => updatePrescription(index, "frequency", e.target.value)}
+                    />
+                    <div className="flex items-center gap-2">
+                      <Input
+                        placeholder="Duração"
+                        value={prescription.duration}
+                        onChange={(e) => updatePrescription(index, "duration", e.target.value)}
+                      />
+                      <Button type="button" variant="destructive" onClick={() => removePrescription(index)}>
+                        <X size={16} />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={addPrescription} className="mt-2">
+                  <Plus size={16} /> Adicionar Prescrição
                 </Button>
               </div>
 
-              {prescriptions.map((prescription, index) => (
-                <Card key={index} className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <Label className="text-sm font-medium">Prescrição {index + 1}</Label>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => removePrescription(index)}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <X size={16} />
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                      <Label htmlFor={`medication-${index}`}>Medicamento</Label>
-                      <Input
-                        id={`medication-${index}`}
-                        value={prescription.medication}
-                        onChange={(e) => updatePrescription(index, 'medication', e.target.value)}
-                        placeholder="Nome do medicamento"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor={`dosage-${index}`}>Dosagem</Label>
-                      <Input
-                        id={`dosage-${index}`}
-                        value={prescription.dosage}
-                        onChange={(e) => updatePrescription(index, 'dosage', e.target.value)}
-                        placeholder="Ex: 10mg"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor={`frequency-${index}`}>Frequência</Label>
-                      <Input
-                        id={`frequency-${index}`}
-                        value={prescription.frequency}
-                        onChange={(e) => updatePrescription(index, 'frequency', e.target.value)}
-                        placeholder="Ex: 2x ao dia"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor={`duration-${index}`}>Duração</Label>
-                      <Input
-                        id={`duration-${index}`}
-                        value={prescription.duration}
-                        onChange={(e) => updatePrescription(index, 'duration', e.target.value)}
-                        placeholder="Ex: 7 dias"
-                      />
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="nextAppointment"
@@ -377,7 +330,7 @@ export function PatientEvolutionForm({
                   <FormItem>
                     <FormLabel>Próxima Consulta</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: Retorno em 15 dias" {...field} />
+                      <Input type="date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -391,11 +344,7 @@ export function PatientEvolutionForm({
                   <FormItem>
                     <FormLabel>Observações</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Observações adicionais..."
-                        className="min-h-[80px]"
-                        {...field} 
-                      />
+                      <Textarea {...field} placeholder="Observações adicionais" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -403,7 +352,8 @@ export function PatientEvolutionForm({
               />
             </div>
 
-            <div className="flex justify-end space-x-4">
+            {/* Botões de ação */}
+            <div className="flex justify-end space-x-4 mt-6">
               <Button type="button" variant="outline" onClick={onCancel}>
                 Cancelar
               </Button>
@@ -411,6 +361,7 @@ export function PatientEvolutionForm({
                 {isSubmitting ? "Salvando..." : "Salvar"}
               </Button>
             </div>
+
           </form>
         </Form>
       </CardContent>

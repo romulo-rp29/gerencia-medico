@@ -78,18 +78,27 @@ export interface IStorage {
 }
 
 // Initialize database connection
-let connectionString = process.env.DATABASE_URL;
+let db: ReturnType<typeof drizzle>;
 
-// Fallback to local PostgreSQL if Supabase connection fails
-if (!connectionString) {
-  connectionString = `postgresql://postgres:postgres@localhost:5432/postgres`;
-  console.log("Using local PostgreSQL database as fallback");
+async function initializeDatabase() {
+  if (db) return;
+
+  let connectionString = process.env.DATABASE_URL;
+
+  if (!connectionString) {
+    connectionString = `postgresql://postgres:postgres@localhost:5432/postgres`;
+    console.log("⚠️ Using local PostgreSQL database as fallback");
+  } else {
+    console.log("✅ Using provided DATABASE_URL.");
+  }
+
+  const pool = new Pool({
+    connectionString,
+    ssl: { rejectUnauthorized: false }, // 👈 Necessário para Supabase
+  });
+
+  db = drizzle(pool);
 }
-
-const pool = new Pool({
-  connectionString: connectionString,
-});
-const db = drizzle(pool);
 
 export class DatabaseStorage implements IStorage {
   async initializeDefaults(): Promise<void> {
@@ -134,7 +143,7 @@ export class DatabaseStorage implements IStorage {
   async getUsers(role?: string): Promise<User[]> {
     if (role) {
       return await db.select().from(users)
-        .where(and(eq(users.isActive, true), eq(users.role, role as any)));
+        .where(and(eq(users.isActive, true), eq(users.role, role as User['role'])));
     }
     return await db.select().from(users).where(eq(users.isActive, true));
   }
@@ -199,7 +208,7 @@ export class DatabaseStorage implements IStorage {
       allergies: insertPatient.allergies || null,
       medicalHistory: insertPatient.medicalHistory || null
     };
-    const result = await db.insert(patients).values([patientWithId]).returning();
+    const result = await db.insert(patients).values(patientWithId as any).returning();
     return result[0];
   }
 
@@ -208,11 +217,7 @@ export class DatabaseStorage implements IStorage {
       ...insertPatient, 
       updatedAt: new Date(),
     };
-    // Remove any problematic array handling for now
-    delete updateData.allergies;
-    delete updateData.medicalHistory;
-    
-    const result = await db.update(patients).set(updateData).where(eq(patients.id, id)).returning();
+    const result = await db.update(patients).set(updateData as any).where(eq(patients.id, id)).returning();
     return result[0];
   }
 
@@ -551,7 +556,7 @@ export class DatabaseStorage implements IStorage {
       updatedAt: new Date(),
     };
     
-    const result = await db.insert(patientEvolutions).values(newEvolution).returning();
+    const result = await db.insert(patientEvolutions).values(newEvolution as any).returning();
     return result[0];
   }
 
@@ -561,8 +566,9 @@ export class DatabaseStorage implements IStorage {
       updatedAt: new Date(),
     };
     
-    const result = await db.update(patientEvolutions)
-      .set(updateData)
+    const result = await db
+      .update(patientEvolutions)
+      .set(updateData as any)
       .where(eq(patientEvolutions.id, id))
       .returning();
     
@@ -577,8 +583,6 @@ export class DatabaseStorage implements IStorage {
 
 // Create storage instance and initialize defaults
 export const storage = new DatabaseStorage();
+export { initializeDatabase };
 
-// Initialize default users on startup
-storage.initializeDefaults().catch(error => {
-  console.warn("Could not initialize database defaults:", error.message);
-});
+// The database is initialized in server/index.ts after dotenv has loaded.
