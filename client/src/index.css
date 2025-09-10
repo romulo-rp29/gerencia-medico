@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(210, 20%, 98%);
+  --foreground: hsl(224, 71.4%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(224, 71.4%, 4.1%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(224, 71.4%, 4.1%);
+  --primary: hsl(220.9, 70%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(220, 14.3%, 95.9%);
+  --secondary-foreground: hsl(220.9, 39.3%, 11%);
+  --muted: hsl(220, 14.3%, 95.9%);
+  --muted-foreground: hsl(220, 8.9%, 46.1%);
+  --accent: hsl(220, 14.3%, 95.9%);
+  --accent-foreground: hsl(220.9, 39.3%, 11%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(210, 20%, 98%);
+  --border: hsl(220, 13%, 91%);
+  --input: hsl(220, 13%, 91%);
+  --ring: hsl(220.9, 70%, 50%);
+  --chart-1: hsl(220.9, 70%, 50%);
+  --chart-2: hsl(160, 60%, 45%);
+  --chart-3: hsl(30, 80%, 55%);
+  --chart-4: hsl(280, 65%, 60%);
+  --chart-5: hsl(340, 75%, 55%);
+  --radius: 0.5rem;
+  
+  /* Medical-specific colors */
+  --medical-blue: hsl(220.9, 70%, 50%);
+  --medical-green: hsl(160, 84.1%, 39.4%);
+  --medical-amber: hsl(25, 95%, 53.1%);
+  --medical-red: hsl(0, 72.2%, 50.6%);
+  
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.dark {
+  --background: hsl(224, 71.4%, 4.1%);
+  --foreground: hsl(210, 20%, 98%);
+  --card: hsl(224, 71.4%, 4.1%);
+  --card-foreground: hsl(210, 20%, 98%);
+  --popover: hsl(224, 71.4%, 4.1%);
+  --popover-foreground: hsl(210, 20%, 98%);
+  --primary: hsl(217.2, 91.2%, 59.8%);
+  --primary-foreground: hsl(222.2, 84%, 4.9%);
+  --secondary: hsl(217.2, 32.6%, 17.5%);
+  --secondary-foreground: hsl(210, 20%, 98%);
+  --muted: hsl(217.2, 32.6%, 17.5%);
+  --muted-foreground: hsl(215, 20.2%, 65.1%);
+  --accent: hsl(217.2, 32.6%, 17.5%);
+  --accent-foreground: hsl(210, 20%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(210, 20%, 98%);
+  --border: hsl(217.2, 32.6%, 17.5%);
+  --input: hsl(217.2, 32.6%, 17.5%);
+  --ring: hsl(217.2, 91.2%, 59.8%);
+  --chart-1: hsl(217.2, 91.2%, 59.8%);
+  --chart-2: hsl(160, 60%, 45%);
+  --chart-3: hsl(30, 80%, 55%);
+  --chart-4: hsl(280, 65%, 60%);
+  --chart-5: hsl(340, 75%, 55%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  .medical-blue {
+    @apply text-[hsl(var(--medical-blue))];
+  }
+  
+  .bg-medical-blue {
+    @apply bg-[hsl(var(--medical-blue))];
+  }
+  
+  .medical-green {
+    @apply text-[hsl(var(--medical-green))];
+  }
+  
+  .bg-medical-green {
+    @apply bg-[hsl(var(--medical-green))];
+  }
+  
+  .medical-amber {
+    @apply text-[hsl(var(--medical-amber))];
+  }
+  
+  .bg-medical-amber {
+    @apply bg-[hsl(var(--medical-amber))];
+  }
+  
+  .medical-red {
+    @apply text-[hsl(var(--medical-red))];
+  }
+  
+  .bg-medical-red {
+    @apply bg-[hsl(var(--medical-red))];
+  }
+  
+  .sidebar-link {
+    @apply flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200;
+  }
+  
+  .sidebar-link.active {
+    @apply bg-medical-blue text-white;
+  }
+  
+  .sidebar-link:not(.active) {
+    @apply text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800;
+  }
+}
