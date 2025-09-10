@@ -389,13 +389,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log("Patient evolution request body:", req.body);
       
-      // Transform string dates to Date objects before validation
-      const transformedData = {
-        ...req.body,
-        evolutionDate: req.body.evolutionDate ? new Date(`${req.body.evolutionDate}T00:00:00`) : new Date(),
-      };
-      
-      const evolutionData = insertPatientEvolutionSchema.parse(transformedData);
+      const evolutionData = insertPatientEvolutionSchema.parse(req.body);
       const evolution = await storage.createPatientEvolution(evolutionData);
       res.status(201).json(evolution);
     } catch (error) {
@@ -409,13 +403,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.patch("/api/patient-evolutions/:id", async (req, res) => {
     try {
-      // Transform string dates to Date objects before validation
-      const transformedData = {
-        ...req.body,
-        ...(req.body.evolutionDate && { evolutionDate: new Date(`${req.body.evolutionDate}T00:00:00`) }),
-      };
-      
-      const evolutionData = insertPatientEvolutionSchema.partial().parse(transformedData);
+      const evolutionData = insertPatientEvolutionSchema.partial().parse(req.body);
       const evolution = await storage.updatePatientEvolution(req.params.id, evolutionData);
       if (!evolution) {
         return res.status(404).json({ message: "Patient evolution not found" });

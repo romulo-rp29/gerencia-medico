@@ -143,7 +143,7 @@ export class DatabaseStorage implements IStorage {
   async getUsers(role?: string): Promise<User[]> {
     if (role) {
       return await db.select().from(users)
-        .where(and(eq(users.isActive, true), eq(users.role, role)));
+        .where(and(eq(users.isActive, true), eq(users.role, role as User['role'])));
     }
     return await db.select().from(users).where(eq(users.isActive, true));
   }
@@ -208,7 +208,7 @@ export class DatabaseStorage implements IStorage {
       allergies: insertPatient.allergies || null,
       medicalHistory: insertPatient.medicalHistory || null
     };
-    const result = await db.insert(patients).values([patientWithId]).returning();
+    const result = await db.insert(patients).values(patientWithId as any).returning();
     return result[0];
   }
 
@@ -217,11 +217,7 @@ export class DatabaseStorage implements IStorage {
       ...insertPatient, 
       updatedAt: new Date(),
     };
-    // Remove any problematic array handling for now
-    delete updateData.allergies;
-    delete updateData.medicalHistory;
-    
-    const result = await db.update(patients).set(updateData).where(eq(patients.id, id)).returning();
+    const result = await db.update(patients).set(updateData as any).where(eq(patients.id, id)).returning();
     return result[0];
   }
 
@@ -560,7 +556,7 @@ export class DatabaseStorage implements IStorage {
       updatedAt: new Date(),
     };
     
-    const result = await db.insert(patientEvolutions).values(newEvolution).returning();
+    const result = await db.insert(patientEvolutions).values(newEvolution as any).returning();
     return result[0];
   }
 
@@ -570,8 +566,9 @@ export class DatabaseStorage implements IStorage {
       updatedAt: new Date(),
     };
     
-    const result = await db.update(patientEvolutions)
-      .set(updateData)
+    const result = await db
+      .update(patientEvolutions)
+      .set(updateData as any)
       .where(eq(patientEvolutions.id, id))
       .returning();
     

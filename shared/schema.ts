@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, decimal, boolean, integer, jsonb, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, decimal, boolean, integer, jsonb, pgEnum, date } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -112,7 +112,7 @@ export const patientEvolutions = pgTable("patient_evolutions", {
   patientId: varchar("patient_id").notNull().references(() => patients.id),
   appointmentId: varchar("appointment_id").references(() => appointments.id),
   doctorId: varchar("doctor_id").notNull().references(() => users.id),
-  evolutionDate: timestamp("evolution_date").notNull().default(sql`now()`),
+  evolutionDate: date("evolution_date").notNull().default(sql`now()`),
   chiefComplaint: text("chief_complaint"),
   historyOfPresentIllness: text("history_of_present_illness"),
   physicalExamination: text("physical_examination"),
