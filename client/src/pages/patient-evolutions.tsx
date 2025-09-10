@@ -71,7 +71,7 @@ export default function PatientEvolutions() {
     mutationFn: (data: InsertPatientEvolution) => 
       apiRequest("POST", "/api/patient-evolutions", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/patient-evolutions"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/patient-evolutions/${selectedPatientId}`] });
       setShowForm(false);
       toast({
         title: "Sucesso",
@@ -91,7 +91,7 @@ export default function PatientEvolutions() {
     mutationFn: ({ id, data }: { id: string; data: Partial<InsertPatientEvolution> }) =>
       apiRequest("PATCH", `/api/patient-evolutions/${id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/patient-evolutions"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/patient-evolutions/${selectedPatientId}`] });
       setEditingEvolution(null);
       setShowForm(false);
       toast({
@@ -112,7 +112,7 @@ export default function PatientEvolutions() {
     mutationFn: (id: string) =>
       apiRequest("DELETE", `/api/patient-evolutions/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/patient-evolutions"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/patient-evolutions/${selectedPatientId}`] });
       toast({
         title: "Sucesso",
         description: "Evolução excluída com sucesso.",
