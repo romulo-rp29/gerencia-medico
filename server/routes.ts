@@ -392,7 +392,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Transform string dates to Date objects before validation
       const transformedData = {
         ...req.body,
-        evolutionDate: req.body.evolutionDate ? new Date(req.body.evolutionDate) : new Date(),
+        evolutionDate: req.body.evolutionDate ? new Date(`${req.body.evolutionDate}T00:00:00`) : new Date(),
       };
       
       const evolutionData = insertPatientEvolutionSchema.parse(transformedData);
@@ -412,7 +412,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Transform string dates to Date objects before validation
       const transformedData = {
         ...req.body,
-        ...(req.body.evolutionDate && { evolutionDate: new Date(req.body.evolutionDate) }),
+        ...(req.body.evolutionDate && { evolutionDate: new Date(`${req.body.evolutionDate}T00:00:00`) }),
       };
       
       const evolutionData = insertPatientEvolutionSchema.partial().parse(transformedData);
