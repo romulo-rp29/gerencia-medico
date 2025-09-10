@@ -143,7 +143,7 @@ export class DatabaseStorage implements IStorage {
   async getUsers(role?: string): Promise<User[]> {
     if (role) {
       return await db.select().from(users)
-        .where(and(eq(users.isActive, true), eq(users.role, role as any)));
+        .where(and(eq(users.isActive, true), eq(users.role, role)));
     }
     return await db.select().from(users).where(eq(users.isActive, true));
   }
