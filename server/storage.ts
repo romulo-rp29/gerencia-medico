@@ -78,27 +78,18 @@ export interface IStorage {
 }
 
 // Initialize database connection
-let db: ReturnType<typeof drizzle>;
+let connectionString = process.env.DATABASE_URL;
 
-async function initializeDatabase() {
-  if (db) return;
-
-  let connectionString = process.env.DATABASE_URL;
-
-  if (!connectionString) {
-    connectionString = `postgresql://postgres:postgres@localhost:5432/postgres`;
-    console.log("⚠️ Using local PostgreSQL database as fallback");
-  } else {
-    console.log("✅ Using provided DATABASE_URL.");
-  }
-
-  const pool = new Pool({
-    connectionString,
-    ssl: { rejectUnauthorized: false }, // 👈 Necessário para Supabase
-  });
-
-  db = drizzle(pool);
+// Fallback to local PostgreSQL if Supabase connection fails
+if (!connectionString) {
+  connectionString = `postgresql://postgres:postgres@localhost:5432/postgres`;
+  console.log("Using local PostgreSQL database as fallback");
 }
+
+const pool = new Pool({
+  connectionString: connectionString,
+});
+const db = drizzle(pool);
 
 export class DatabaseStorage implements IStorage {
   async initializeDefaults(): Promise<void> {
@@ -586,6 +577,8 @@ export class DatabaseStorage implements IStorage {
 
 // Create storage instance and initialize defaults
 export const storage = new DatabaseStorage();
-export { initializeDatabase };
 
-// The database is initialized in server/index.ts after dotenv has loaded.
+// Initialize default users on startup
+storage.initializeDefaults().catch(error => {
+  console.warn("Could not initialize database defaults:", error.message);
+});
