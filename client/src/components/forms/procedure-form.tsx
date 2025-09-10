@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useQuery } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -20,15 +21,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { insertProcedureSchema, type InsertProcedure, type Procedure } from '@shared/schema';
+import { insertProcedureSchema, type InsertProcedure, type Procedure, type Patient } from '@shared/schema';
 
 const procedureFormSchema = insertProcedureSchema.extend({
   scheduledDate: z.string(),
   startTime: z.string().optional(),
   endTime: z.string().optional(),
+  patientId: z.string().min(1, 'Paciente é obrigatório'),
 }).omit({
   doctorId: true,
-  patientId: true,
   appointmentId: true,
 });
 
@@ -45,18 +46,23 @@ export default function ProcedureForm({
   onCancel,
   isSubmitting = false,
 }: ProcedureFormProps) {
+  const { data: patients = [] } = useQuery<Patient[]>({
+    queryKey: ['/api/patients'],
+  });
+
   const form = useForm<z.infer<typeof procedureFormSchema>>({
     resolver: zodResolver(procedureFormSchema),
     defaultValues: {
+      patientId: procedure?.patientId || '',
       procedureType: procedure?.procedureType || 'Upper Endoscopy',
       status: procedure?.status || 'scheduled',
-      scheduledDate: procedure?.scheduledDate 
+      scheduledDate: procedure?.scheduledDate
         ? new Date(procedure.scheduledDate).toISOString().slice(0, 16)
         : '',
-      startTime: procedure?.startTime 
+      startTime: procedure?.startTime
         ? new Date(procedure.startTime).toISOString().slice(0, 16)
         : '',
-      endTime: procedure?.endTime 
+      endTime: procedure?.endTime
         ? new Date(procedure.endTime).toISOString().slice(0, 16)
         : '',
       findings: procedure?.findings || '',
@@ -75,8 +81,8 @@ export default function ProcedureForm({
       scheduledDate: new Date(data.scheduledDate),
       startTime: data.startTime ? new Date(data.startTime) : undefined,
       endTime: data.endTime ? new Date(data.endTime) : undefined,
-      appointmentId: 'appointment-id', // This should be passed as a prop
-      patientId: 'patient-id', // This should be passed as a prop
+      appointmentId: undefined, // This should be passed as a prop
+      patientId: data.patientId,
       doctorId: 'doctor-id', // This should come from auth context
       medications: [], // This could be enhanced with a proper medication selector
     };
@@ -87,6 +93,30 @@ export default function ProcedureForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="patientId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Paciente *</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione um paciente" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {patients.map((patient) => (
+                      <SelectItem key={patient.id} value={patient.id}>
+                        {patient.firstName} {patient.lastName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="procedureType"

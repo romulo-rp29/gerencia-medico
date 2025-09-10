@@ -134,7 +134,7 @@ export default function Procedures() {
     );
   };
 
-  const formatDateTime = (dateString: string) => {
+  const formatDateTime = (dateString: string | Date) => {
     const date = new Date(dateString);
     return {
       date: date.toLocaleDateString('pt-BR'),
