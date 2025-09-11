@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -38,7 +39,11 @@ type PatientEvolutionWithRelations = PatientEvolution & {
 };
 
 export default function PatientEvolutions() {
-  const [selectedPatientId, setSelectedPatientId] = useState<string>("");
+  const [location] = useLocation();
+  const [selectedPatientId, setSelectedPatientId] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("patientId") || "";
+  });
   const [searchTerm, setSearchTerm] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingEvolution, setEditingEvolution] = useState<PatientEvolutionWithRelations | null>(null);
@@ -157,9 +162,11 @@ export default function PatientEvolutions() {
   };
 
   const selectedPatient = patients.find(p => p.id === selectedPatientId);
-  const filteredPatients = patients.filter(patient => 
-    `${patient.firstName} ${patient.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPatients = patients
+    .filter(patient => 
+      `${patient.firstName} ${patient.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return (
     <div className="container mx-auto px-4 py-8">

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search, Edit, Eye } from 'lucide-react';
+import { useLocation } from 'wouter';
 import TopBar from '@/components/layout/topbar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,6 +34,7 @@ export default function Patients() {
   const [showPatientForm, setShowPatientForm] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+  const [, setLocation] = useLocation();
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -116,6 +118,10 @@ export default function Patients() {
   const handleEditPatient = (patient: Patient) => {
     setEditingPatient(patient);
     setShowPatientForm(true);
+  };
+
+  const handleCreateEvolution = (patient: Patient) => {
+    setLocation(`/patient-evolutions?patientId=${patient.id}`);
   };
 
   const handleScheduleAppointment = (patient: Patient) => {
@@ -263,6 +269,7 @@ export default function Patients() {
             description: "A funcionalidade de anotações estará disponível em breve.",
           });
         }}
+        onCreateEvolution={handleCreateEvolution}
         onViewBilling={(patient) => {
           toast({
             title: "Funcionalidade em Breve",

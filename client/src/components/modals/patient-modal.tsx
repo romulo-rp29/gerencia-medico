@@ -18,6 +18,7 @@ interface PatientModalProps {
   onScheduleAppointment?: (patient: Patient) => void;
   onAddNote?: (patient: Patient) => void;
   onViewBilling?: (patient: Patient) => void;
+  onCreateEvolution?: (patient: Patient) => void;
 }
 
 export default function PatientModal({
@@ -27,6 +28,7 @@ export default function PatientModal({
   onScheduleAppointment,
   onAddNote,
   onViewBilling,
+  onCreateEvolution,
 }: PatientModalProps) {
   if (!patient) return null;
 
@@ -179,6 +181,14 @@ export default function PatientModal({
                 >
                   <CreditCard className="w-4 h-4 mr-2" />
                   Ver Faturamento
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-medical-blue hover:bg-blue-50"
+                  onClick={() => onCreateEvolution?.(patient)}
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  Criar Evolução
                 </Button>
               </div>
             </div>
