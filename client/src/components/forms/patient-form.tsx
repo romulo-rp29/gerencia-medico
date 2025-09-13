@@ -68,21 +68,7 @@ export default function PatientForm({
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Primeiro Nome *</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Sobrenome *</FormLabel>
+                <FormLabel>Nome *</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
